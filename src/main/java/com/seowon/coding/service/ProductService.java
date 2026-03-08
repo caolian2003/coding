@@ -50,8 +50,21 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<Product> findProductsByCategory(String category) {
         // TODO #1: 구현 항목
-        // Repository를 사용하여 category 로 찾을 제품목록 제공
-        return List.of();
+
+        /** 풀이 : 각 메소드는 ResponseDTO(VO) 가 아닌 Entity를 반환하고 있음.
+                 따라서 해당 풀이에서도 DTO(VO)와 Entity를 구분하지 않음.
+        **/
+
+        // 1. 인자로 받은 카테고리로 품목 리스트를 조회
+        List<Product> products = productRepository.findByCategory(category);
+        System.out.println("products 잘 넘어왔나 확인:{}" + products );
+        // 2. Opiontal로 받지 않으므로 추가적 Null 처리
+        if (products.isEmpty()) {
+            throw new RuntimeException(" 해당 카테고리에서 발견된 상품이 없습니다.: " + category);
+        }
+
+        // 3. 반환
+        return products;
     }
 
     /**
